@@ -225,12 +225,13 @@ class dota():
 		for row in div_rows:
 			tournament = {}
 
-			values = row.find('div',class_="divCell Tournament Header")
 			if tournamentType is None:
-				tournament['tier'] = values.a.get_text()
-				tournament['name'] = values.b.get_text()
+				tournament['tier'] = row.find('div',{'class':'divCell Tier Header'}).a.get_text()
 			else:
 				tournament['tier'] = tournamentType
+
+			values = row.find('div',class_="divCell Tournament Header")
+			tournament['name'] = values.b.get_text()
 
 			try:
 				tournament['icon'] = self.__image_base_url+row.find('div',class_="divCell Tournament Header").find('img').get('src')
@@ -279,9 +280,8 @@ class dota():
 		pro_circuit = {}
 		circuit_object = dota_pro_circuit()
 		pro_circuit['rankings'] = circuit_object.get_rankings(soup)
-		soup,__ = self.liquipedia.parse('Dota_Pro_Circuit/2018-19/Schedule')
+		soup,__ = self.liquipedia.parse('Dota_Pro_Circuit/2021/Schedule')
 		pro_circuit['schedule'] = circuit_object.get_schedule(soup)
-
 
 		return pro_circuit
 
