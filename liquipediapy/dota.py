@@ -138,16 +138,18 @@ class dota():
 			game = {}
 			cells = match.find_all('td')
 			try:
-				game['team1'] = cells[0].find('span',class_='team-template-image').find('a').get('title')			
+				game['team1'] = cells[0].find('span',{'class':'team-template-text'}).find('a').get_text()			
 				game['format'] = cells[1].find('abbr').get_text()
-				game['team2'] = cells[2].find('span',class_='team-template-image').find('a').get('title')
-				game['start_time'] = cells[3].find('span',class_="timer-object").get_text()
+				game['team2'] = cells[2].find('span',class_='team-template-text').find('a').get('title')
+				game['start_time'] = cells[3].find('span',class_='timer-object').get_text()
 				game['tournament'] = cells[3].find('div').a['title']
 				game['tournament_short_name'] = cells[3].find('div').get_text().rstrip()
-				try:
-					game['twitch_channel'] = cells[3].find('span',class_="timer-object").get('data-stream-twitch')
-				except AttributeError:
-					pass
+
+				## no need to use
+				# try:
+				# 	game['twitch_channel'] = cells[3].find('span',class_="timer-object-countdown").get('data-stream-twitch')
+				# except AttributeError:
+				# 	pass
 				games.append(game)	
 			except AttributeError:
 				continue		
@@ -273,7 +275,7 @@ class dota():
 				pass
 
 	def get_pro_circuit_details(self):
-		soup,__ = self.liquipedia.parse('Dota_Pro_Circuit/2018-19/Rankings/Full')
+		soup,__ = self.liquipedia.parse('Dota_Pro_Circuit/2021/Rankings/Full')
 		pro_circuit = {}
 		circuit_object = dota_pro_circuit()
 		pro_circuit['rankings'] = circuit_object.get_rankings(soup)
